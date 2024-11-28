@@ -2,17 +2,16 @@ from dotenv import load_dotenv
 from langchain.prompts.prompt import PromptTemplate
 from langchain_openai import AzureChatOpenAI
 from third_parties.linkedin import scrape_linkedin_profile
-
-if __name__ ==  "__main__":
-
-# Load environment variables from .env file
-    load_dotenv()
-
-    print("Hello Langchain")
+from agents.linkedin_lookup_agent import lookup as linkedin_lookup_agent
 
 
 
-# Create LLM API
+def ice_break_with(name: str) -> str:
+
+    linkedin_username = linkedin_lookup_agent(name=name)
+    linkedin_data = scrape_linkedin_profile(linkedin_profile_url=linkedin_username)
+
+    # Create LLM API
     llm = AzureChatOpenAI(model="gpt-35",
     api_version="2023-03-15-preview",
     temperature=0,
@@ -32,8 +31,11 @@ if __name__ ==  "__main__":
 
 # Generate summary using LCEL
     chain = summary_prompt_template | llm
-    linkedin_data = scrape_linkedin_profile(
-        linkedin_profile_url="https://www.linkedin.com/in/pranaynaik/"
-    )
     res = chain.invoke(input={"information": linkedin_data})
     print("Summary:/n", res)
+
+if __name__ ==  "__main__":
+
+# Load environment variables from .env file
+    load_dotenv()
+    ice_break_with(name="Pranay Naik TCS")
