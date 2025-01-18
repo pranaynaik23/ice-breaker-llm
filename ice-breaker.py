@@ -4,7 +4,7 @@ from langchain_openai import AzureChatOpenAI
 from third_parties.linkedin import scrape_linkedin_profile
 from agents.linkedin_lookup_agent import lookup as linkedin_lookup_agent
 
-
+load_dotenv()
 
 def ice_break_with(name: str) -> str:
 
@@ -37,5 +37,5 @@ def ice_break_with(name: str) -> str:
 if __name__ ==  "__main__":
 
 # Load environment variables from .env file
-    load_dotenv()
+   
     ice_break_with(name="Pranay Naik TCS")
